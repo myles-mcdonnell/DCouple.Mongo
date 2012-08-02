@@ -1,0 +1,4 @@
+<Modules>
+  <Module PersistentId="4CCF926A-8380-494C-8517-C8A164A0B7CB" ModuleId="DCouple.Mongo" />
+  <Module PersistentId="074C5649-3FF3-4C3D-94B6-2868ED580176" ModuleId="DCouple.Mongo.UnitTestingDemo" />
+</Modules>
