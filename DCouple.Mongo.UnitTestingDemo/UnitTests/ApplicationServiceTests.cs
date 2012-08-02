@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Client;
 using DCouple.Mongo;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
@@ -28,7 +27,7 @@ namespace UnitTests
 
             cursorMock.Setup(m => m.GetEnumerator()).Returns(peopleOver21YearsOld.GetEnumerator());
 
-            databaseMock.Setup(m => m.GetCollection<Person>(CollectionNames.People))
+            databaseMock.Setup(m => m.GetCollection<Person>("People"))
                 .Returns(peopleCollectionMock.Object);
 
             peopleCollectionMock.Setup(
@@ -42,6 +41,32 @@ namespace UnitTests
             databaseMock.VerifyAll();
             peopleCollectionMock.VerifyAll();
             cursorMock.VerifyAll();
+        }
+    }
+
+    public class Person
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
+    }
+
+    public class ApplicationService
+    {
+        private readonly IMongoDatabase _mongoDatabase;
+
+        public ApplicationService(IMongoDatabase mongoDatabase)
+        {
+            _mongoDatabase = mongoDatabase;
+        }
+
+        public IEnumerable<Person> GetPeopleOver(int years)
+        {
+            var collection = _mongoDatabase.GetCollection<Person>("People");
+
+            var result = collection.FindAs<Person>(Query.GT("Age", years));
+
+            return result;
         }
     }
 }
