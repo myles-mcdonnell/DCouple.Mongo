@@ -190,7 +190,7 @@ namespace DCouple.Mongo
 
         public object FindOneAs(Type documentType, IMongoQuery query)
         {
-            return _collection;
+            return _collection.FindOneAs(documentType, query);
         }
 
         public TDocument FindOneByIdAs<TDocument>(BsonValue id)
